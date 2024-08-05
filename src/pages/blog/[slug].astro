@@ -3,23 +3,38 @@ import { getCollection } from "astro:content";
 import Main from "../../components/Main.astro";
 import Layout from "../../layouts/Layout.astro";
 import Image from "astro/components/Image.astro";
-export const getStaticPaths = async () => {
-  const blogs = await getCollection("blog");
-  const paths = blogs.map((blog: any) => ({
-    params: { slug: blog.slug },
-    props: { blog },
-  }));
-  return paths;
-};
+import { getEntryBySlug } from "astro:content";
+// export const getStaticPaths = async () => {
+//   const blogs = await getCollection("blog");
+//   const paths = blogs.map((blog: any) => ({
+//     params: { slug: blog.slug },
+//     props: { blog },
+//   }));
+//   return paths;
+// };
 
-const { blog } = Astro.props;
-const { title, description, image } = blog["data"];
-const { Content } = await blog.render();
+const { slug } = Astro.params;
+const blog = await getEntryBySlug("blog", slug as string);
+if(!blog){
+  Astro.redirect("/404")
+
+}
+// const dummyBlog : {title:string,description:string,image:string} = {
+//   title:'dummy title',description:'dummy description',image:'dummy image'
+// }
+const { title, description, image } =  blog?.data!
+const { Content } = await blog!.render() ;
 ---
 
 <Layout title={title} image={description} description="">
   <Main>
-    <Image class="mx-auto" src={image} alt={"first image"} width={1024} height={768} />
+    <Image
+      class="mx-auto"
+      src={image}
+      alt={"first image"}
+      width={1024}
+      height={768}
+    />
 
     <div class="prose max-w-5xl mx-auto py-4">
       <Content />
