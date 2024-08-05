@@ -6,7 +6,6 @@ type Props = {
 };
 
 const { blogs } = Astro.props;
-console.log('title-1',blogs[0].title);
 blogs.forEach(b => {
   console.log(b.data.title);
   
