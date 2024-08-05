@@ -1,0 +1,27 @@
+---
+import type { CollectionEntry } from "astro:content";
+import Card from "./Card.astro";
+type Props = {
+  blogs: CollectionEntry<"blog">[];
+};
+
+const { blogs } = Astro.props;
+console.log('title-1',blogs[0].title);
+blogs.forEach(b => {
+  console.log(b.data.title);
+  
+});
+---
+
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+  {
+    blogs.map((blog: any) => (
+      <Card
+        title={blog.data.title}
+        description={blog.data.description}
+        href={`/blogs/${blog.slug}`}
+        image={blog.data.image}
+      />
+    ))
+  }
+</div>
