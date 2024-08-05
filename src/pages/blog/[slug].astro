@@ -4,26 +4,26 @@ import Main from "../../components/Main.astro";
 import Layout from "../../layouts/Layout.astro";
 import Image from "astro/components/Image.astro";
 import { getEntryBySlug } from "astro:content";
-// export const getStaticPaths = async () => {
-//   const blogs = await getCollection("blog");
-//   const paths = blogs.map((blog: any) => ({
-//     params: { slug: blog.slug },
-//     props: { blog },
-//   }));
-//   return paths;
-// };
+export const getStaticPaths = async () => {
+  const blogs = await getCollection("blog");
+  const paths = blogs.map((blog: any) => ({
+    params: { slug: blog.slug },
+    props: { blog },
+  }));
+  return paths;
+};
 
-const { slug } = Astro.params;
-const blog = await getEntryBySlug("blog", slug as string);
-if(!blog){
-  Astro.redirect("/404")
+ const { slug } = Astro.params;
+ const blog = await getEntryBySlug("blog", slug as string);
+// if(!blog){
+//   Astro.redirect("/404")
 
-}
+// }
 // const dummyBlog : {title:string,description:string,image:string} = {
 //   title:'dummy title',description:'dummy description',image:'dummy image'
 // }
-const { title, description, image } =  blog?.data!
-const { Content } = await blog!.render() ;
+const { title, description, image } =  blog?.data
+const { Content } = await blog.render() ;
 ---
 
 <Layout title={title} image={description} description="">
